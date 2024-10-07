@@ -24,16 +24,17 @@ namespace ArchivoVisual
         {
             
             string Nombre = tbNombre.Text;
-            int Long = Nombre.Length;
+            int lenght = Nombre.Length;
             int Edad = int.Parse(tbEdad.Text);
             double Nota = int.Parse(tbNota.Text);
             char Genero = char.Parse(tbGenero.Text);
-            Estudiante estudiante = new Estudiante(Long, Nombre, Edad, Nota, Genero);
+            Estudiante estudiante = new Estudiante(Nombre, Edad, Nota, Genero);
             FileStream mArchivoEscritor = new FileStream("datos.dat", FileMode.OpenOrCreate, FileAccess.Write);
+            
             using (BinaryWriter escritor = new BinaryWriter(mArchivoEscritor))
             {
-                escritor.Write(estudiante.Long);
-                escritor.Write(estudiante.Nombre);
+                escritor.Write(lenght);
+                escritor.Write(estudiante.Nombre.ToCharArray());
                 escritor.Write(estudiante.Edad);
                 escritor.Write(estudiante.Nota);
                 escritor.Write(estudiante.Genero);
@@ -42,25 +43,26 @@ namespace ArchivoVisual
 
         private void btmMostrar_Click(object sender, EventArgs e)
         {
+            
             FileStream mArchivoLector = new FileStream("datos.dat", FileMode.Open, FileAccess.Read);
             using (BinaryReader lector = new BinaryReader(mArchivoLector))
             {
-                
+                estudiantes.Clear();
                 while (mArchivoLector.Position != mArchivoLector.Length)
                 {
-
-                    int lenght = lector.ReadInt32();
-                    char[] nombrearreglo= lector.ReadChars(lenght);
-                    string Nombre= new string(nombrearreglo);
+                    int longitud = lector.ReadInt32();
+                    char[] nom = lector.ReadChars(longitud);
+                    string Nombre = new string(nom);
                     int Edad = lector.ReadInt32();
-                    double Nota = lector.ReadInt32();
+                    double Nota = lector.ReadDouble();
                     char Genero= lector.ReadChar();
-                    Estudiante estudiante = new Estudiante(lenght, Nombre, Edad, Nota, Genero);
+                    Estudiante estudiante = new Estudiante(Nombre, Edad, Nota, Genero);
                     estudiantes.Add(estudiante);
                 }
             }
 
             dgvSalida.DataSource = estudiantes;
+            
         }
     }
 }

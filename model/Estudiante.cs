@@ -8,15 +8,14 @@ namespace ArchivoVisual.model
 {
     internal class Estudiante
     {
-        public int Long {  get; set; }
         public string Nombre { get; set; }
         public int Edad {  get; set; }
         public double Nota { get; set; }
         public char Genero {  get; set; }
 
-       public Estudiante(int @long, string nombre, int edad, double nota, char genero)
+       public Estudiante(string nombre, int edad, double nota, char genero)
         {
-            Long = @long;
+           
             Nombre = nombre;
             Edad = edad;
             Nota = nota;
